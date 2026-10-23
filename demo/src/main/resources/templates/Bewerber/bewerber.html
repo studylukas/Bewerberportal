@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bewerberseite</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link th:href="@{/styles.css}" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+    <div class="container mt-5">
+        
+        <header class="d-flex justify-content-between align-items-center py-3 mb-4 border-bottom">
+            <span class="fs-4 fw-bold text-primary">Lukas Recruiting</span>
+        </header>
+
+        <main class="row justify-content-center">
+            <div class="col-md-6">
+                <h1 class="mb-4">Bewerber anlegen</h1>
+
+                <!-- Das Formular nutzt das Objekt aus Ihrem Controller -->
+                <form th:action="@{/bewerber}" th:object="${bewerber}" method="post" class="card p-4 shadow-sm">
+                    
+                    <!-- Vorname -->
+                    <div class="mb-3">
+                        <label th:for="vorname" class="form-label fw-medium">Vorname</label>
+                        <input type="text" th:field="*{vorname}" class="form-control" placeholder="Max">
+                    </div>
+
+                    <!-- Nachname -->
+                    <div class="mb-3">
+                        <label th:for="nachname" class="form-label fw-medium">Nachname</label>
+                        <input type="text" th:field="*{nachname}" class="form-control" placeholder="Mustermann">
+                    </div>
+
+                    <!-- E-Mail -->
+                    <div class="mb-3">
+                        <label th:for="email" class="form-label fw-medium">E-Mail</label>
+                        <input type="email" th:field="*{email}" class="form-control" placeholder="max@beispiel.de">
+                    </div>
+
+                    <!-- Telefon -->
+                    <div class="mb-3">
+                        <label th:for="email" class="form-label fw-medium">Telefon</label>
+                        <input type="telefon" th:field="*{telefon}" class="form-control" placeholder="+491777774477">
+                    </div>
+                    <!-- Button -->
+                    <button type="submit" class="btn btn-primary w-100 mt-2">Speichern</button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <!-- Bootstrap JS (wichtig für responsive Funktionen) -->
+    <script src="https://jsdelivr.net"></script>
+</body>
+</html>
