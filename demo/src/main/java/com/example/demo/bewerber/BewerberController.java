@@ -1,11 +1,12 @@
 package com.example.demo.bewerber;
 
+import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.example.demo.Stellen.Stellen;
 
 @Controller 
 public class BewerberController {
@@ -33,6 +34,15 @@ public class BewerberController {
         bewerberService.BewerberAnlegen(bewerber);
         
         return "redirect:/";
+    }
+    
+    @GetMapping("bewerber/liste")
+    public String listeAnzeige(Model model){
+        List<Stellen> alleStellen = bewerberService.alleStellenAnzeigen();
+        
+        model.addAttribute("bewerberListe", alleStellen);
+        
+        return "Bewerber/liste";
     }
     
 }

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stellen</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link th:href="@{/styles.css}" rel="stylesheet">
+</head>
+<body class="bg-light p-5">
+
+<div class="container bg-white p-5 rounded shadow-sm" style="max-width: 800px;">
+    <!-- Dynamische Bezeichnung der Stelle -->
+    <h1 class="fw-bold mb-2" th:text="${stelle.bezeichnung}"></h1>
+    
+    <div class="mb-4">
+        <!-- Bereich und Status als Badges -->
+        <span class="badge bg-secondary me-2" th:text="${stelle.bereich}"></span>
+        <span class="badge bg-success" th:text="${stelle.stellenStatus}"></span>
+    </div>
+    
+    <hr>
+
+    <h4 class="fw-bold mt-4">Beschreibung</h4>
+    <!-- 'white-space: pre-line' sorgt für die korrekte Darstellung der Absätze -->
+    <p th:text="${stelle.beschreibung}" style="white-space: pre-line;" class="text-muted fs-5"></p>
+
+    <hr class="mt-5">
+    
+    <div class="d-flex justify-content-between mt-4">
+        <!-- Zurück-Button zur Liste -->
+        <a th:href="@{/bewerber/stellen}" class="btn btn-outline-secondary">Zurück zur Übersicht</a>
+    
+        <!-- Bewerben-Button (führt zum Bewerbungsformular) -->
+        <a th:href="@{/bewerber(stellenId=${stelle.id})}" class="btn btn-primary btn-lg">Jetzt bewerben</a>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stellen</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link th:href="@{/styles.css}" rel="stylesheet">
+</head>
+<body class="bg-light p-5">
+
+<div class="container bg-white p-4 rounded shadow-sm">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold m-0">Übersicht aller offenen Stellen</h2>
+    </div>
+
+    <!-- Bootstrap Tabelle -->
+    <table class="table table-striped table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Bezeichnung</th>
+                <th>Bereich</th>
+                <th>Status</th>
+                <th>Beschreibung</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Die Thymeleaf-Schleife geht jede Stelle in der Liste durch -->
+            <tr th:each="stelle : ${bewerberListe}">
+                <!-- Vorher: <td class="fw-bold" th:text="${stelle.bezeichnung}"></td> -->
+
+                <td class="fw-bold">
+                    <a th:href="@{/bewerber/stellen/{id}(id=${stelle.id})}" th:text="${stelle.bezeichnung}"></a>
+                </td>
+
+                <td th:text="${stelle.bereich}"></td>
+                <td>
+                    <span class="badge bg-success" th:text="${stelle.stellenStatus}"></span>
+                </td>
+                <!-- 'pre-line' sorgt dafür, dass Zeilenumbrüche im Text erhalten bleiben -->
+                <td style="white-space: pre-line; max-width: 400px;" th:text="${stelle.beschreibung}"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
