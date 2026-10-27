@@ -17,7 +17,7 @@ public class StellenController {
         this.stellenService = stellenService;
     }
     
-    @GetMapping("/stellen")
+   @GetMapping("/stellen")
     public String zeigeFormular(Model model){
         model.addAttribute("stellen", new Stellen());
         
