@@ -4,7 +4,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration 
 @EnableWebSecurity 
@@ -15,16 +18,26 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
     
-    @Bean 
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .cors(cors -> cors.disable())
             .csrf(csrf -> csrf.disable())
-            .sessionManagement(session -> session.sessionCreationPolicy(sessionCreationPolicy.STATELESS))
+            
+            // Hier war die Klammer verrutscht:
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+            
+            // Hier wird die Kette ordnungsgemäß mit einem Semikolon abgeschlossen:
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
-                .anyRequest().authenticated());
-                
+                .requestMatchers("/", "/index", "/login").permitAll()
+                .anyRequest().authenticated()
+            )
+            .formLogin(form -> form.loginPage("/login").defaultSuccessUrl("/startseite", true).permitAll());
+
         return http.build();
-    }
+}
+
 }

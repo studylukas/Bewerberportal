@@ -14,6 +14,7 @@ public class Recruiter {
     @Column(length = 50, nullable = false) private String name;
     @Column(length = 50, nullable = false) private String email;
     @Column(length = 255, nullable = false) private String passwortHash;
+    private String rolle;
     
     
     public Long getId(){
@@ -42,5 +43,13 @@ public class Recruiter {
 
     public String getPasswortHash() {
         return passwortHash;
+    }
+
+    public void setRolle(String rolle) {
+        this.rolle = rolle;
+    }
+
+    public String getRolle() {
+        return rolle;
     }
 }
