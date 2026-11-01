@@ -2,6 +2,8 @@ package com.example.demo.recruiter;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -14,7 +16,8 @@ public class Recruiter {
     @Column(length = 50, nullable = false) private String name;
     @Column(length = 50, nullable = false) private String email;
     @Column(length = 255, nullable = false) private String passwortHash;
-    private String rolle;
+    @Enumerated(EnumType.STRING)
+    private Rolle rolle;
     
     
     public Long getId(){
@@ -45,11 +48,11 @@ public class Recruiter {
         return passwortHash;
     }
 
-    public void setRolle(String rolle) {
+    public void setRolle(Rolle rolle) {
         this.rolle = rolle;
     }
 
-    public String getRolle() {
+    public Rolle getRolle() {
         return rolle;
     }
 }
