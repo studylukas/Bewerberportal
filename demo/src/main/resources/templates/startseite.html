@@ -11,8 +11,24 @@
 </head>
 <body class="bg-light p-5">
     <div class="card-body">
-        <h1 class="h5 card-title text-center text-muted mb-3">Startseite REcruiterportal</h1>
-        
+        <h1 class="h5 card-title text-center text-muted mb-3">Startseite Recruiterportal</h1>
+       
+        <div class="d-flex gap-3 justify-content-center">
+        <div class="card position-relative" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Offenbe Bewerbungen</h5>
+                <p class="card-text">Hier gehts zu den offenen Bewerbungen</p>
+                <a th:href="@{/recruiter/listeBewerbungen}" class="stretched-link"></a>
+            </div>
+        </div>
+        <div class="card position-relative" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Offenbe Stellen</h5>
+                <p class="card-text">Hier gehts zu den offenen Stellen</p>
+                <a th:href="@{/stellen/liste}" class="stretched-link"></a>
+            </div>
+        </div>
+        </div>
     </div>
 
 </body>

@@ -1,0 +1,6 @@
+ALTER TABLE bewerberStelle RENAME TO bewerbung;
+
+ALTER TABLE bewerbung
+    ADD COLUMN status      VARCHAR(20) NOT NULL DEFAULT 'EINGEGANGEN',
+    ADD COLUMN beworben_am DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    ADD COLUMN anschreiben TEXT        NULL;

@@ -28,7 +28,7 @@ public class StellenController {
     public String stelleAnlegen(@ModelAttribute Stellen stellen){
         stellenService.stelleAnlegen(stellen);
         
-        return "redirect:/";
+        return "redirect:/startseite";
     }
     
     @GetMapping("/stellen/liste")

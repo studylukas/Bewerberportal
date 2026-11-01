@@ -26,7 +26,11 @@ public class BewerberService {
         return bewerberRepository.save(bewerber);
     }
     
-        public List<Stellen> alleStellenAnzeigen(){
+    public List<Stellen> alleStellenAnzeigen(){
         return stellenRepository.findAll();
+    }
+    
+    public List<Bewerber> alleBewerberAnzeigen(){
+        return bewerberRepository.findAll();
     }
 }

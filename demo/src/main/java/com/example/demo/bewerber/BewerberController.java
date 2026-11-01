@@ -33,7 +33,7 @@ public class BewerberController {
     public String bewerberAnlegen(@ModelAttribute Bewerber bewerber){
         bewerberService.BewerberAnlegen(bewerber);
         
-        return "redirect:/";
+        return "redirect:/bewerber/liste";
     }
     
     @GetMapping("bewerber/liste")
@@ -45,6 +45,14 @@ public class BewerberController {
         return "Bewerber/liste";
     }
     
-}
+    @GetMapping("/recruiter/listeBewerbungen")
+    public String listeOffeneBewerbungen(Model model){
+        List<Bewerber> alleBewerber = bewerberService.alleBewerberAnzeigen();
+        
+        model.addAttribute("listeBewerber", alleBewerber);
+        
+        return "Recruiter/listeBewerbungen";
+    }
 
+}
 
