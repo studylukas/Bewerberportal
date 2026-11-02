@@ -37,7 +37,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
                 .requestMatchers("/", "/login", "/error",
                  "/bewerber", "/bewerber/stellen/**",
-                 "/impressum", "/datenschutz").permitAll()
+                 "/impressum", "/datenschutz", "/bewerbung/status/**").permitAll()
                 .requestMatchers("/favicon.ico", "/styles.css", "/css/**", "/js/**", "/images/**").permitAll()
                 .anyRequest().authenticated()
 

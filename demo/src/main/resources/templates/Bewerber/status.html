@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="de"
+      th:replace="~{layout :: layout(~{::title}, 'bewerber', ~{::main})}">
+<head>
+    <title>Status Ihrer Bewerbung</title>
+</head>
+<body>
+<main class="bg-white p-5 rounded shadow-sm mx-auto" style="max-width: 800px;">
+
+    <h1 class="fw-bold mb-4">Status Ihrer Bewerbung</h1>
+
+    <!-- Persönlicher Link: einziger Zugang zur Bewerbung, da es kein Bewerberkonto gibt -->
+    <div class="alert alert-info">
+        <p class="fw-bold mb-2">Bitte speichern Sie diesen Link.</p>
+        <p class="mb-2">Nur über diesen persönlichen Link können Sie den Stand Ihrer Bewerbung später erneut abrufen.</p>
+        <input type="text" class="form-control" th:value="${statusLink}" readonly onclick="this.select()">
+    </div>
+
+    <hr>
+
+    <!-- Stelle, auf die sich beworben wurde -->
+    <h4 class="fw-bold mt-4">Stelle</h4>
+    <p class="mb-1">
+        <a class="fs-5" th:href="@{/bewerber/stellen/{id}(id=${bewerbung.stelle.id})}" th:text="${bewerbung.stelle.bezeichnung}"></a>
+    </p>
+    <span class="badge bg-secondary" th:text="${bewerbung.stelle.bereich}"></span>
+
+    <hr>
+
+    <!-- Eingangsdatum und aktueller Status; bewusst keine internen Daten (Datensparsamkeit) -->
+    <h4 class="fw-bold mt-4">Bearbeitungsstand</h4>
+    <dl class="row">
+        <dt class="col-sm-3">Eingegangen am</dt>
+        <dd class="col-sm-9">
+            <span th:text="${#temporals.format(bewerbung.beworbenAm, 'dd.MM.yyyy')}"></span>
+            um <span th:text="${#temporals.format(bewerbung.beworbenAm, 'HH:mm')}"></span> Uhr
+        </dd>
+
+        <dt class="col-sm-3">Status</dt>
+        <dd class="col-sm-9">
+            <span class="badge fs-6" th:classappend="${bewerbung.status.badgeKlasse}"
+                  th:text="${bewerbung.status.anzeigename}"></span>
+        </dd>
+    </dl>
+
+    <div class="d-flex justify-content-between mt-5">
+        <a th:href="@{/}" class="btn btn-outline-secondary">Zurück zu den offenen Stellen</a>
+    </div>
+</main>
+</body>
+</html>

@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 import com.example.demo.Stellen.Stellen;
 import com.example.demo.bewerber.Bewerber;
-
+import java.util.UUID;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -49,6 +49,9 @@ public class Bewerbung {
     
     @Column(precision = 10, scale = 2)
     private BigDecimal gehaltswunsch;
+    
+    @Column(name = "zugang_token", nullable = false, unique = true, length = 36)
+    private String zugangToken;
 
     protected Bewerbung() {}
 
@@ -59,6 +62,7 @@ public class Bewerbung {
         this.anschreiben = anschreiben;
         this.einwilligungAm = LocalDateTime.now();
         this.gehaltswunsch = gehaltswunsch;
+        this.zugangToken = UUID.randomUUID().toString();
     }
 
     public BewerbungId getId() {
@@ -99,5 +103,9 @@ public class Bewerbung {
     
     public void setGehaltswunsch(BigDecimal gehaltswunsch){
         this.gehaltswunsch = gehaltswunsch;
+    }
+
+    public String getZugangToken() {
+        return zugangToken;
     }
 }

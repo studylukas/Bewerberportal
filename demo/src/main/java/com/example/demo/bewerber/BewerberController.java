@@ -6,8 +6,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import com.example.demo.bewerbung.Bewerbung;
 import com.example.demo.bewerbung.BewerbungService;
 
 @Controller 
@@ -47,11 +50,21 @@ public class BewerberController {
         }
         Bewerber gespeichert = bewerberService.BewerberAnlegen(bewerber);
 
-        if (stellenId != null) {
-            bewerbungService.bewerben(gespeichert.getId(), stellenId, anschreiben, gehaltswunsch);
+        if (stellenId == null) {
+            return "redirect:/";
         }
-        
-        return "redirect:/";
+
+        Bewerbung bewerbung = bewerbungService.bewerben(gespeichert.getId(), stellenId, anschreiben, gehaltswunsch);
+
+        return "redirect:/bewerbung/status/" + bewerbung.getZugangToken();
+    }
+
+    @GetMapping("/bewerbung/status/{token}")
+    public String zeigeAktuellenStatus(@PathVariable("token") String token, Model model){
+        model.addAttribute("bewerbung", bewerbungService.bewerbungFindenPerToken(token));
+        // Vollständiger Link (inkl. http://host:port), damit der Bewerber ihn speichern kann
+        model.addAttribute("statusLink", ServletUriComponentsBuilder.fromCurrentRequestUri().toUriString());
+        return "Bewerber/status";
     }
 
 }

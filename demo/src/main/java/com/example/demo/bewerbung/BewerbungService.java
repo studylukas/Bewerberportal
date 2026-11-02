@@ -39,7 +39,7 @@ public class BewerbungService {
     public void statusAendern(Long bewerberId, Long stelleId, BewerbungStatus neu) {
         Bewerbung bw = bewerbungRepository.findById(new BewerbungId(bewerberId, stelleId))
                 .orElseThrow();
-        bw.setStatus(neu);   // wird beim Commit automatisch gespeichert
+        bw.setStatus(neu);   
     }
     
     public List<Bewerbung> alleBewerbungenAnzeigen(){
@@ -48,5 +48,9 @@ public class BewerbungService {
     
     public Bewerbung bewerbungFinden(Long bewerberId, Long stellenId){
         return bewerbungRepository.findById(new BewerbungId(bewerberId, stellenId)).orElseThrow();
+    }
+
+    public Bewerbung bewerbungFindenPerToken(String zugangToken){
+        return bewerbungRepository.findByZugangToken(zugangToken).orElseThrow();
     }
 }
