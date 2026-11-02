@@ -52,10 +52,31 @@ public class Bewerbung {
         this.anschreiben = anschreiben;
     }
 
-    public void setStatus(BewerbungStatus neu) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setStatus'");
+    public BewerbungId getId() {
+        return id;
     }
 
-    // Getter, plus Setter für status
+    public Bewerber getBewerber() {
+        return bewerber;
+    }
+
+    public Stellen getStelle() {
+        return stelle;
+    }
+
+    public BewerbungStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(BewerbungStatus neu) {
+        this.status = neu;
+    }
+
+    public LocalDateTime getBeworbenAm() {
+        return beworbenAm;
+    }
+
+    public String getAnschreiben() {
+        return anschreiben;
+    }
 }

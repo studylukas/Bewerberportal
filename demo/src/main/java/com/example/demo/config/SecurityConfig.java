@@ -35,7 +35,9 @@ public class SecurityConfig {
             // Hier wird die Kette ordnungsgemäß mit einem Semikolon abgeschlossen:
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
-                .requestMatchers("/", "/index", "/login", "/error", "/bewerber/liste").permitAll()
+                .requestMatchers("/", "/index", "/login", "/error",
+                 "/bewerber", "/bewerber/liste",
+                 "/bewerber/stellen", "/bewerber/stellen/**").permitAll()
                 .requestMatchers("/favicon.ico", "/styles.css", "/css/**", "/js/**", "/images/**").permitAll()
                 .anyRequest().authenticated()
 

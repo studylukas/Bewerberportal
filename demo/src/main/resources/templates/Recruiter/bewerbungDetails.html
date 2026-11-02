@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="de"
+      th:replace="~{layout :: layout(~{::title}, 'recruiter', ~{::main})}">
+<head>
+    <title>Bewerbung</title>
+</head>
+<body>
+<main class="bg-white p-5 rounded shadow-sm mx-auto" style="max-width: 800px;">
+
+    <!-- Name des Bewerbers und aktueller Status -->
+    <div class="d-flex justify-content-between align-items-start mb-2">
+        <h1 class="fw-bold m-0" th:text="${bewerbung.bewerber.vorname + ' ' + bewerbung.bewerber.nachname}"></h1>
+        <span class="badge fs-6"
+              th:classappend="${bewerbung.status.name() == 'ABGELEHNT'} ? 'bg-danger' :
+                              (${bewerbung.status.name() == 'ANGENOMMEN'} ? 'bg-success' :
+                              (${bewerbung.status.name() == 'EINGEGANGEN'} ? 'bg-primary' : 'bg-warning text-dark'))"
+              th:text="${bewerbung.status}"></span>
+    </div>
+    <p class="text-muted">
+        Beworben am <span th:text="${#temporals.format(bewerbung.beworbenAm, 'dd.MM.yyyy')}"></span>
+        um <span th:text="${#temporals.format(bewerbung.beworbenAm, 'HH:mm')}"></span> Uhr
+    </p>
+
+    <hr>
+
+    <!-- Kontaktdaten des Bewerbers -->
+    <h4 class="fw-bold mt-4">Kontaktdaten</h4>
+    <dl class="row">
+        <dt class="col-sm-3">Vorname</dt>
+        <dd class="col-sm-9" th:text="${bewerbung.bewerber.vorname}"></dd>
+
+        <dt class="col-sm-3">Nachname</dt>
+        <dd class="col-sm-9" th:text="${bewerbung.bewerber.nachname}"></dd>
+
+        <dt class="col-sm-3">E-Mail</dt>
+        <dd class="col-sm-9">
+            <a th:href="'mailto:' + ${bewerbung.bewerber.email}" th:text="${bewerbung.bewerber.email}"></a>
+        </dd>
+
+        <dt class="col-sm-3">Telefon</dt>
+        <dd class="col-sm-9">
+            <a th:href="'tel:' + ${bewerbung.bewerber.telefon}" th:text="${bewerbung.bewerber.telefon}"></a>
+        </dd>
+    </dl>
+
+    <hr>
+
+    <!-- Stelle, auf die sich beworben wurde -->
+    <h4 class="fw-bold mt-4">Stelle</h4>
+    <p class="mb-1">
+        <a class="fs-5" th:href="@{/stellen/details/{id}(id=${bewerbung.stelle.id})}" th:text="${bewerbung.stelle.bezeichnung}"></a>
+    </p>
+    <div class="mb-3">
+        <span class="badge bg-secondary me-2" th:text="${bewerbung.stelle.bereich}"></span>
+        <span class="badge bg-success" th:text="${bewerbung.stelle.stellenStatus}"></span>
+    </div>
+
+    <hr>
+
+    <!-- Anschreiben; 'pre-line' sorgt dafür, dass Zeilenumbrüche erhalten bleiben -->
+    <h4 class="fw-bold mt-4">Anschreiben</h4>
+    <p th:if="${bewerbung.anschreiben != null and !#strings.isEmpty(bewerbung.anschreiben)}"
+       th:text="${bewerbung.anschreiben}" style="white-space: pre-line;" class="text-muted fs-5"></p>
+    <p th:unless="${bewerbung.anschreiben != null and !#strings.isEmpty(bewerbung.anschreiben)}"
+       class="text-muted fst-italic">Kein Anschreiben vorhanden.</p>
+
+    <hr class="mt-5">
+
+    <!-- Status ändern -->
+    <h4 class="fw-bold mt-4">Status ändern</h4>
+    <form th:action="@{/recruiter/bewerbungen/{b}/{s}/status(b=${bewerbung.bewerber.id}, s=${bewerbung.stelle.id})}" method="post"
+          class="d-flex gap-2 align-items-center">
+        <select name="status" class="form-select" style="max-width: 250px;">
+            <option th:each="s : ${statusWerte}" th:value="${s}" th:text="${s}"
+                    th:selected="${s == bewerbung.status}"></option>
+        </select>
+        <button type="submit" class="btn btn-primary">Status speichern</button>
+    </form>
+
+    <div class="d-flex justify-content-between mt-5">
+        <!-- Zurück-Button zur Liste -->
+        <a th:href="@{/recruiter/listeBewerbungen}" class="btn btn-outline-secondary">Zurück zur Übersicht</a>
+    </div>
+</main>
+</body>
+</html>

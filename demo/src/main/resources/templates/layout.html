@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<!--
+    Zentrales Layout für alle Seiten.
+
+    Verwendung in einer Seite:
+    <html th:replace="~{layout :: layout(~{::title}, 'recruiter', ~{::main})}">
+        <head><title>Seitentitel</title></head>
+        <body><main> ... Inhalt ... </main></body>
+    </html>
+
+    bereich: 'bewerber'  -> öffentliche Navigation (Stellen, Recruiter-Login)
+             'recruiter' -> Navigation für eingeloggte Recruiter (inkl. Abmelden)
+-->
+<html xmlns:th="http://www.thymeleaf.org" lang="de"
+      th:fragment="layout(title, bereich, content)">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:replace="${title}">Lukas Recruiting</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link th:href="@{/css/styles.css}" rel="stylesheet">
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-md navbar-dark bg-primary shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold"
+               th:href="${bereich == 'recruiter'} ? @{/startseite} : @{/}">Lukas Recruiting</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#hauptnavigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="hauptnavigation">
+                <!-- Navigation für Bewerber -->
+                <ul class="navbar-nav ms-auto" th:if="${bereich == 'bewerber'}">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/bewerber/stellen}">Offene Stellen</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/login}">Recruiter-Login</a></li>
+                </ul>
+
+                <!-- Navigation für Recruiter -->
+                <ul class="navbar-nav ms-auto align-items-md-center" th:if="${bereich == 'recruiter'}">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/startseite}">Startseite</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/recruiter/listeBewerbungen}">Bewerbungen</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/stellen/liste}">Stellen</a></li>
+                    <li class="nav-item ms-md-3">
+                        <form th:action="@{/logout}" method="post" class="m-0">
+                            <button type="submit" class="btn btn-outline-light btn-sm">Abmelden</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Seiteninhalt -->
+    <div class="container py-5 flex-grow-1">
+        <main th:replace="${content}"></main>
+    </div>
+
+    <!-- Fußzeile -->
+    <footer class="py-3 border-top bg-white text-center text-muted small">
+        &copy; Lukas Recruiting
+    </footer>
+
+    <!-- Bootstrap JS (wichtig für responsive Funktionen, z. B. das Menü auf dem Handy) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,5 +1,7 @@
 package com.example.demo.bewerbung;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.example.demo.Stellen.Stellen;
@@ -37,5 +39,13 @@ public class BewerbungService {
         Bewerbung bw = bewerbungRepository.findById(new BewerbungId(bewerberId, stelleId))
                 .orElseThrow();
         bw.setStatus(neu);   // wird beim Commit automatisch gespeichert
+    }
+    
+    public List<Bewerbung> alleBewerbungenAnzeigen(){
+        return bewerbungRepository.findAll();
+    }
+    
+    public Bewerbung bewerbungFinden(Long bewerberId, Long stellenId){
+        return bewerbungRepository.findById(new BewerbungId(bewerberId, stellenId)).orElseThrow();
     }
 }

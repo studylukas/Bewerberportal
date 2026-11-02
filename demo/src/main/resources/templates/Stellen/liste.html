@@ -1,20 +1,14 @@
 <!DOCTYPE html>
-<html xmlns:th="http://thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="de"
+      th:replace="~{layout :: layout(~{::title}, 'recruiter', ~{::main})}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stellen</title>
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <link th:href="@{/css/styles.css}" rel="stylesheet">
+    <title>Stellenübersicht</title>
 </head>
-<body class="bg-light p-5">
-
-<div class="container bg-white p-4 rounded shadow-sm">
+<body>
+<main class="bg-white p-4 rounded shadow-sm">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold m-0">Übersicht aller offenen Stellen</h2>
-        <a href="/stellen" class="btn btn-primary">Neue Stelle anlegen</a>
+        <a th:href="@{/stellen}" class="btn btn-primary">Neue Stelle anlegen</a>
     </div>
 
     <!-- Bootstrap Tabelle -->
@@ -30,8 +24,6 @@
         <tbody>
             <!-- Die Thymeleaf-Schleife geht jede Stelle in der Liste durch -->
             <tr th:each="stelle : ${stellenListe}">
-                <!-- Vorher: <td class="fw-bold" th:text="${stelle.bezeichnung}"></td> -->
-
                 <td class="fw-bold">
                     <a th:href="@{/stellen/details/{id}(id=${stelle.id})}" th:text="${stelle.bezeichnung}"></a>
                 </td>
@@ -45,7 +37,6 @@
             </tr>
         </tbody>
     </table>
-</div>
-
+</main>
 </body>
 </html>
