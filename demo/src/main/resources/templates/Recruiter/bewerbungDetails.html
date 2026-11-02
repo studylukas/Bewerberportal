@@ -10,11 +10,8 @@
     <!-- Name des Bewerbers und aktueller Status -->
     <div class="d-flex justify-content-between align-items-start mb-2">
         <h1 class="fw-bold m-0" th:text="${bewerbung.bewerber.vorname + ' ' + bewerbung.bewerber.nachname}"></h1>
-        <span class="badge fs-6"
-              th:classappend="${bewerbung.status.name() == 'ABGELEHNT'} ? 'bg-danger' :
-                              (${bewerbung.status.name() == 'ANGENOMMEN'} ? 'bg-success' :
-                              (${bewerbung.status.name() == 'EINGEGANGEN'} ? 'bg-primary' : 'bg-warning text-dark'))"
-              th:text="${bewerbung.status}"></span>
+        <span class="badge fs-6" th:classappend="${bewerbung.status.badgeKlasse}"
+              th:text="${bewerbung.status.anzeigename}"></span>
     </div>
     <p class="text-muted">
         Beworben am <span th:text="${#temporals.format(bewerbung.beworbenAm, 'dd.MM.yyyy')}"></span>
@@ -41,6 +38,11 @@
         <dd class="col-sm-9">
             <a th:href="'tel:' + ${bewerbung.bewerber.telefon}" th:text="${bewerbung.bewerber.telefon}"></a>
         </dd>
+
+        <dt class="col-sm-3">Gehaltswunsch</dt>
+        <dd class="col-sm-9" th:if="${bewerbung.gehaltswunsch != null}"
+            th:text="${#numbers.formatDecimal(bewerbung.gehaltswunsch, 1, 'POINT', 2, 'COMMA')} + ' € brutto/Jahr'"></dd>
+        <dd class="col-sm-9 text-muted fst-italic" th:unless="${bewerbung.gehaltswunsch != null}">Keine Angabe</dd>
     </dl>
 
     <hr>
@@ -71,7 +73,7 @@
     <form th:action="@{/recruiter/bewerbungen/{b}/{s}/status(b=${bewerbung.bewerber.id}, s=${bewerbung.stelle.id})}" method="post"
           class="d-flex gap-2 align-items-center">
         <select name="status" class="form-select" style="max-width: 250px;">
-            <option th:each="s : ${statusWerte}" th:value="${s}" th:text="${s}"
+            <option th:each="s : ${statusWerte}" th:value="${s}" th:text="${s.anzeigename}"
                     th:selected="${s == bewerbung.status}"></option>
         </select>
         <button type="submit" class="btn btn-primary">Status speichern</button>

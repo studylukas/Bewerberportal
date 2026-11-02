@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="de"
+      th:replace="~{layout :: layout(~{::title}, 'bewerber', ~{::main})}">
+<head>
+    <title>Datenschutzerklärung</title>
+</head>
+<body>
+<main class="bg-white p-5 rounded shadow-sm mx-auto" style="max-width: 800px;">
+    <h1 class="fw-bold mb-4">Datenschutzerklärung</h1>
+
+    <!-- PLATZHALTER: Texte vor dem echten Einsatz ersetzen bzw. rechtlich prüfen lassen -->
+    <div class="alert alert-warning">Platzhalter – die Datenschutzerklärung wird noch ergänzt.</div>
+
+    <h4 class="fw-bold mt-4">1. Verantwortliche Stelle</h4>
+    <p>[Firmenname, Anschrift, E-Mail-Adresse – siehe <a th:href="@{/impressum}">Impressum</a>]</p>
+
+    <h4 class="fw-bold mt-4">2. Welche Daten wir verarbeiten</h4>
+    <p>
+        Im Rahmen einer Bewerbung verarbeiten wir nur die Angaben, die für das Auswahlverfahren
+        erforderlich sind: Vorname, Nachname, E-Mail-Adresse, Telefonnummer, Anschreiben und
+        die von Ihnen hochgeladenen Unterlagen.
+    </p>
+
+    <h4 class="fw-bold mt-4">3. Zweck und Rechtsgrundlage</h4>
+    <p>
+        Die Daten werden ausschließlich zur Durchführung des Bewerbungsverfahrens verarbeitet
+        ([Rechtsgrundlage, z. B. Art. 6 Abs. 1 lit. b DSGVO i. V. m. § 26 BDSG]).
+        Eine Aufnahme in einen Talentpool erfolgt nur mit Ihrer gesonderten Einwilligung
+        (Art. 6 Abs. 1 lit. a DSGVO).
+    </p>
+
+    <h4 class="fw-bold mt-4">4. Speicherdauer</h4>
+    <p>
+        Nach einer Absage werden Ihre Daten nach sechs Monaten automatisch gelöscht.
+    </p>
+
+    <h4 class="fw-bold mt-4">5. Ihre Rechte</h4>
+    <p>
+        Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung,
+        Datenübertragbarkeit sowie auf Widerruf einer erteilten Einwilligung. Außerdem können Sie
+        sich bei einer Datenschutz-Aufsichtsbehörde beschweren.
+    </p>
+
+    <h4 class="fw-bold mt-4">6. Kontakt</h4>
+    <p>[Kontaktdaten für Datenschutzanfragen bzw. Datenschutzbeauftragte:r]</p>
+</main>
+</body>
+</html>

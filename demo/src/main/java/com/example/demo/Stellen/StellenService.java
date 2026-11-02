@@ -22,6 +22,18 @@ public class StellenService {
     
     public Stellen stelleSuchenId(Long id) {
     return stellenRepository.findById(id).orElse(null);
-}
+    }
+
+    public Stellen stelleSpeichern(Stellen formular){
+        if(formular.getId() == null) {
+            return stellenRepository.save(formular);
+        }
+        Stellen bestehend = stellenRepository.findById(formular.getId()).orElseThrow();
+        bestehend.setBezeichnung(formular.getBezeichnung());
+        bestehend.setBeschreibung(formular.getBeschreibung());
+        bestehend.setBereich(formular.getBereich());
+        bestehend.setStellenStatus(formular.getStellenStatus());
+        return stellenRepository.save(bestehend);
+    }
 
 }

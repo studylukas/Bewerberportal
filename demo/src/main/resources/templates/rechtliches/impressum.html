@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="de"
+      th:replace="~{layout :: layout(~{::title}, 'bewerber', ~{::main})}">
+<head>
+    <title>Impressum</title>
+</head>
+<body>
+<main class="bg-white p-5 rounded shadow-sm mx-auto" style="max-width: 800px;">
+    <h1 class="fw-bold mb-4">Impressum</h1>
+
+    <!-- PLATZHALTER: Angaben vor dem echten Einsatz ersetzen -->
+    <div class="alert alert-warning">Platzhalter – die Angaben werden noch ergänzt.</div>
+
+    <h4 class="fw-bold mt-4">Angaben gemäß § 5 DDG</h4>
+    <p>
+        [Firmenname]<br>
+        [Straße Hausnummer]<br>
+        [PLZ Ort]
+    </p>
+
+    <h4 class="fw-bold mt-4">Vertreten durch</h4>
+    <p>[Name der vertretungsberechtigten Person]</p>
+
+    <h4 class="fw-bold mt-4">Kontakt</h4>
+    <p>
+        Telefon: [Telefonnummer]<br>
+        E-Mail: [E-Mail-Adresse]
+    </p>
+
+    <h4 class="fw-bold mt-4">Registereintrag</h4>
+    <p>
+        Registergericht: [Amtsgericht]<br>
+        Registernummer: [HRB …]
+    </p>
+
+    <h4 class="fw-bold mt-4">Umsatzsteuer-ID</h4>
+    <p>Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG: [DE…]</p>
+</main>
+</body>
+</html>

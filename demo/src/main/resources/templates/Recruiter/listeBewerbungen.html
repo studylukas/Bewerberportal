@@ -48,11 +48,8 @@
                 <td th:text="${#temporals.format(bewerbung.beworbenAm, 'dd.MM.yyyy HH:mm')}"></td>
 
                 <td>
-                    <span class="badge"
-                          th:classappend="${bewerbung.status.name() == 'ABGELEHNT'} ? 'bg-danger' :
-                                          (${bewerbung.status.name() == 'ANGENOMMEN'} ? 'bg-success' :
-                                          (${bewerbung.status.name() == 'EINGEGANGEN'} ? 'bg-primary' : 'bg-warning text-dark'))"
-                          th:text="${bewerbung.status}"></span>
+                    <span class="badge" th:classappend="${bewerbung.status.badgeKlasse}"
+                          th:text="${bewerbung.status.anzeigename}"></span>
                 </td>
 
                 <!-- 'pre-line' sorgt dafür, dass Zeilenumbrüche im Text erhalten bleiben -->

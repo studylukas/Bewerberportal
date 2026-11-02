@@ -1,5 +1,6 @@
 package com.example.demo.bewerbung;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -25,13 +26,13 @@ public class BewerbungService {
     }
 
     @Transactional
-    public Bewerbung bewerben(Long bewerberId, Long stelleId, String anschreiben) {
+    public Bewerbung bewerben(Long bewerberId, Long stelleId, String anschreiben, BigDecimal gehaltswunsch) {
         if (bewerbungRepository.existsById(new BewerbungId(bewerberId, stelleId))) {
             throw new IllegalStateException("Bereits auf diese Stelle beworben");
         }
         Bewerber b = bewerberRepository.findById(bewerberId).orElseThrow();
         Stellen s = stelleRepository.findById(stelleId).orElseThrow();
-        return bewerbungRepository.save(new Bewerbung(b, s, anschreiben));
+        return bewerbungRepository.save(new Bewerbung(b, s, anschreiben, gehaltswunsch));
     }
 
     @Transactional

@@ -26,9 +26,9 @@ public class StellenController {
     
     @PostMapping("/stellen")
     public String stelleAnlegen(@ModelAttribute Stellen stellen){
-        stellenService.stelleAnlegen(stellen);
+        stellenService.stelleSpeichern(stellen);
         
-        return "redirect:/startseite";
+        return "redirect:/stellen/liste";
     }
     
     @GetMapping("/stellen/liste")
@@ -40,18 +40,6 @@ public class StellenController {
         return "Stellen/liste";
     }
     
-    @GetMapping("/bewerber/stellen")
-    public String listeAnzeigeBewerber(Model model){
-        // Tipp: Hier idealerweise später filtern (z.B. stellenService.nurAktiveStellenAnzeigen())
-        List<Stellen> buehneFuerBewerber = stellenService.alleStellenAnzeigen(); 
-        
-        // WICHTIG: Der Name hier muss exakt zu dem in deiner HTML passen!
-        model.addAttribute("bewerberListe", buehneFuerBewerber); 
-        
-        // Pfad zu deiner zweiten HTML-Datei (z.B. "Bewerber/liste-bewerber")
-        return "Bewerber/liste"; 
-    }
-
     @GetMapping("/stellen/bearbeiten/{id}")
     public String zeigeBearbeitenFormular(@PathVariable("id") Long id, Model model) {
         Stellen bestehendeStelle = stellenService.stelleSuchenId(id);

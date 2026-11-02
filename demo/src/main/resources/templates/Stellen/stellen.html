@@ -12,7 +12,7 @@
             <a th:href="@{/stellen/liste}" class="btn btn-secondary">Abbrechen</a>
         </div>
         <form th:action="@{/stellen}" th:object="${stellen}" method="post" class="card p-4 shadow-sm">
-
+            <input type="hidden" th:field="*{id}">
             <!-- Bezeichnung -->
             <div class="mb-3">
                 <label th:for="bezeichnung" class="form-label fw-medium">Stellenbezeichnung</label>

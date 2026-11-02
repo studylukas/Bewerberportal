@@ -14,25 +14,25 @@
 
             <!-- Vorname -->
             <div class="mb-3">
-                <label th:for="vorname" class="form-label fw-medium">Vorname</label>
+                <label for="vorname" class="form-label fw-medium">Vorname</label>
                 <input type="text" th:field="*{vorname}" class="form-control" placeholder="Max">
             </div>
 
             <!-- Nachname -->
             <div class="mb-3">
-                <label th:for="nachname" class="form-label fw-medium">Nachname</label>
+                <label for="nachname" class="form-label fw-medium">Nachname</label>
                 <input type="text" th:field="*{nachname}" class="form-control" placeholder="Mustermann">
             </div>
 
             <!-- E-Mail -->
             <div class="mb-3">
-                <label th:for="email" class="form-label fw-medium">E-Mail</label>
+                <label for="email" class="form-label fw-medium">E-Mail</label>
                 <input type="email" th:field="*{email}" class="form-control" placeholder="max@beispiel.de">
             </div>
 
             <!-- Telefon -->
             <div class="mb-3">
-                <label th:for="telefon" class="form-label fw-medium">Telefon</label>
+                <label for="telefon" class="form-label fw-medium">Telefon</label>
                 <input type="tel" th:field="*{telefon}" class="form-control" placeholder="+491777774477">
             </div>
 
@@ -44,6 +44,20 @@
                 <label for="anschreiben" class="form-label fw-medium">Anschreiben</label>
                 <textarea id="anschreiben" name="anschreiben" rows="5" class="form-control"></textarea>
             </div>
+
+            <div class="mb-3">
+                <label for="gehaltswunsch" class="form-label fw-medium">Gehaltswunsch in € Brutto/Jahr</label> 
+                <input type="number" min="0" step="0.01" name="gehaltswunsch" id="gehaltswunsch" class="form-control" placeholder="50000" required>
+            </div>
+
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="einwilligung" name="einwilligung" value="true" required>
+                <label class="form-check-label" for="einwilligung">
+                    Ich willige ein, dass meine Angaben zur Durchführung des Bewerbungsverfahrens verarbeitet werden.
+                    Details in der <a th:href="@{/datenschutz}" target="_blank">Datenschutzerklärung</a>.
+                </label>
+            </div>
+
             <!-- Button -->
             <button type="submit" class="btn btn-primary w-100 mt-2">Speichern</button>
         </form>

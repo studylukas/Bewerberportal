@@ -1,5 +1,6 @@
 package com.example.demo.bewerbung;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.example.demo.Stellen.Stellen;
@@ -42,14 +43,22 @@ public class Bewerbung {
 
     @Column(columnDefinition = "TEXT")
     private String anschreiben;
+    
+    @Column(name = "einwilligung_am")
+    private LocalDateTime einwilligungAm;
+    
+    @Column(precision = 10, scale = 2)
+    private BigDecimal gehaltswunsch;
 
     protected Bewerbung() {}
 
-    public Bewerbung(Bewerber bewerber, Stellen stelle, String anschreiben) {
+    public Bewerbung(Bewerber bewerber, Stellen stelle, String anschreiben, BigDecimal gehaltswunsch) {
         this.id = new BewerbungId(bewerber.getId(), stelle.getId());
         this.bewerber = bewerber;
         this.stelle = stelle;
         this.anschreiben = anschreiben;
+        this.einwilligungAm = LocalDateTime.now();
+        this.gehaltswunsch = gehaltswunsch;
     }
 
     public BewerbungId getId() {
@@ -78,5 +87,17 @@ public class Bewerbung {
 
     public String getAnschreiben() {
         return anschreiben;
+    }
+
+    public LocalDateTime getEinwilligungAm() {
+        return einwilligungAm;
+    }
+    
+    public BigDecimal getGehaltswunsch(){
+        return gehaltswunsch;
+    }
+    
+    public void setGehaltswunsch(BigDecimal gehaltswunsch){
+        this.gehaltswunsch = gehaltswunsch;
     }
 }
