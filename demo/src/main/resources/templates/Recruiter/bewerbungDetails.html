@@ -66,6 +66,31 @@
     <p th:unless="${bewerbung.anschreiben != null and !#strings.isEmpty(bewerbung.anschreiben)}"
        class="text-muted fst-italic">Kein Anschreiben vorhanden.</p>
 
+    <hr>
+
+    <!-- Verlauf aller Statuswechsel (UC-R03); ältester Eintrag zuerst -->
+    <h4 class="fw-bold mt-4">Verlauf</h4>
+    <table class="table table-sm align-middle" th:unless="${#lists.isEmpty(verlauf)}">
+        <thead>
+            <tr>
+                <th>Datum</th>
+                <th>von</th>
+                <th>nach</th>
+                <th>durch</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="a : ${verlauf}">
+                <td th:text="${#temporals.format(a.geaendertAm, 'dd.MM.yyyy HH:mm')}"></td>
+                <!-- ?. verhindert einen Fehler, wenn der Wert null ist; ?: liefert dann den Ersatztext -->
+                <td th:text="${a.vonStatus?.anzeigename ?: '–'}"></td>
+                <td th:text="${a.nachStatus.anzeigename}"></td>
+                <td th:text="${a.recruiter?.name ?: 'Bewerber'}"></td>
+            </tr>
+        </tbody>
+    </table>
+    <p th:if="${#lists.isEmpty(verlauf)}" class="text-muted fst-italic">Noch keine Statuswechsel erfasst.</p>
+
     <hr class="mt-5">
 
     <!-- Status ändern -->

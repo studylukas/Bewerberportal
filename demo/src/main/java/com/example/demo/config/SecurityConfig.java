@@ -1,6 +1,5 @@
 package com.example.demo.config;
 
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -28,13 +27,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .cors(cors -> cors.disable())
-            .csrf(csrf -> csrf.disable())
+            .cors(cors -> cors.disable())         
             
-            
-            // Hier wird die Kette ordnungsgemäß mit einem Semikolon abgeschlossen:
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
                 .requestMatchers("/", "/login", "/error",
                  "/bewerber", "/bewerber/stellen/**",
                  "/impressum", "/datenschutz", "/bewerbung/status/**").permitAll()
@@ -53,15 +48,11 @@ public class SecurityConfig {
 
         return email -> {
 
-            System.out.println("Loginversuch: " + email);
-
             Recruiter recruiter = recruiterRepository
                     .findByEmail(email)
                     .orElseThrow(() ->
                             new UsernameNotFoundException(
                                     "Recruiter nicht gefunden: " + email));
-
-            System.out.println("Recruiter gefunden");
 
             return org.springframework.security.core.userdetails.User
                     .withUsername(recruiter.getEmail())
@@ -84,14 +75,4 @@ public class SecurityConfig {
         return authProvider;
     }
 
-    @Bean
-CommandLineRunner testPassword() {
-    return args -> {
-        BCryptPasswordEncoder encoder =
-                new BCryptPasswordEncoder();
-
-        System.out.println(
-                encoder.encode("passwort123"));
-    };
-}
 }

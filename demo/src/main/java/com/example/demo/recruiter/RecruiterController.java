@@ -1,5 +1,6 @@
 package com.example.demo.recruiter;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -48,14 +49,16 @@ public class RecruiterController {
     public String bewerbungDetails(@PathVariable Long bewerberId, @PathVariable Long stellenId, Model model){
         model.addAttribute("bewerbung", bewerbungService.bewerbungFinden(bewerberId, stellenId));
         model.addAttribute("statusWerte", BewerbungStatus.values());
+        model.addAttribute("verlauf", bewerbungService.statusHistorie(bewerberId, stellenId));
         return "Recruiter/bewerbungDetails";
     }
     
     @PostMapping("/bewerbungen/{bewerberId}/{stellenId}/status")
     public String statusAendern(@PathVariable Long bewerberId,
                             @PathVariable Long stellenId,
-                            @RequestParam BewerbungStatus status) {
-        bewerbungService.statusAendern(bewerberId, stellenId, status);
+                            @RequestParam BewerbungStatus status, Principal principal) {
+        Recruiter aktuellerBearbeiter = recruiterService.bearbeiter(principal.getName());                        
+        bewerbungService.statusAendern(bewerberId, stellenId, status, aktuellerBearbeiter);
     
         return "redirect:/recruiter/bewerbungen/" + bewerberId + "/" + stellenId;
 }

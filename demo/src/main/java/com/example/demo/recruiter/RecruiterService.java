@@ -1,6 +1,5 @@
 package com.example.demo.recruiter;
 
-import java.nio.file.OpenOption;
 import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -9,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.Stellen.Stellen;
 import com.example.demo.Stellen.StellenRepository;
 import com.example.demo.Stellen.StellenService;
+import com.example.demo.exception.NichtGefundenException;
 
 @Service 
 public class RecruiterService {
@@ -57,6 +57,8 @@ public class RecruiterService {
         return stellenRepository.save(stellen);
     }
     
-    
+    public Recruiter bearbeiter(String email){
+       return recruiterRepository.findByEmail(email).orElseThrow(() -> new NichtGefundenException("Recruiter nicht gefunfen."));
+    }
     
 }
