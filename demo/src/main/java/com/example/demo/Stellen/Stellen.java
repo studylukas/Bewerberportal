@@ -3,6 +3,8 @@ package com.example.demo.Stellen;
 import java.time.Instant;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -22,19 +24,19 @@ public class Stellen {
     private String bezeichnung;
     @Column (name = "erstellt_am")
     private Instant erstelltAm;
-    @Column (name = "stellen_status", length = 100, nullable = false)
-    private String stellenStatus;
+    @Enumerated (EnumType.STRING)
+    @Column (name = "stellen_status", nullable = false)
+    private StellenStatus stellenStatus = StellenStatus.OFFEN;
     @Column(length = 100)
     private String standort;
 
     
     protected Stellen (){}
     
-    public Stellen(String bezeichnung, String beschreibung, String bereich, String stellenStatus, String standort){
+    public Stellen(String bezeichnung, String beschreibung, String bereich, String standort){
         this.bezeichnung = bezeichnung;
         this.beschreibung = beschreibung;
         this.bereich = bereich;
-        this.stellenStatus = stellenStatus;
         this.standort = standort;
     }
     
@@ -67,11 +69,11 @@ public class Stellen {
         return bereich;
     }
 
-    public void setStellenStatus(String stellenStatus) {
+    public void setStellenStatus(StellenStatus stellenStatus) {
         this.stellenStatus = stellenStatus;
     }
 
-    public String getStellenStatus() {
+    public StellenStatus getStellenStatus() {
         return stellenStatus;
     }
     

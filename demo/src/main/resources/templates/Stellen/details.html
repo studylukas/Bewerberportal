@@ -12,7 +12,8 @@
     <div class="mb-4">
         <!-- Bereich und Status als Badges -->
         <span class="badge bg-secondary me-2" th:text="${stelle.bereich}"></span>
-        <span class="badge bg-success" th:text="${stelle.stellenStatus}"></span>
+        <span class="badge" th:classappend="${stelle.stellenStatus.badgeKlasse}"
+              th:text="${stelle.stellenStatus.anzeigename}"></span>
     </div>
 
     <hr>

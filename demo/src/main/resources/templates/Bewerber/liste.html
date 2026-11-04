@@ -56,7 +56,6 @@
                 <th>Bezeichnung</th>
                 <th>Bereich</th>
                 <th>Standort</th>
-                <th>Status</th>
                 <th>Beschreibung</th>
             </tr>
         </thead>
@@ -69,9 +68,6 @@
 
                 <td th:text="${stelle.bereich}"></td>
                 <td th:text="${stelle.standort ?: '–'}"></td>
-                <td>
-                    <span class="badge bg-success" th:text="${stelle.stellenStatus}"></span>
-                </td>
                 <!-- 'pre-line' sorgt dafür, dass Zeilenumbrüche im Text erhalten bleiben -->
                 <td style="white-space: pre-line; max-width: 400px;" th:text="${stelle.beschreibung}"></td>
             </tr>

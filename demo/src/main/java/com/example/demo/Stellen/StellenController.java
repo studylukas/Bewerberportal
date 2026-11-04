@@ -20,6 +20,7 @@ public class StellenController {
    @GetMapping("/stellen")
     public String zeigeFormular(Model model){
         model.addAttribute("stellen", new Stellen());
+        model.addAttribute("statusWerte", StellenStatus.values());
         
         return "Stellen/stellen";
     }
@@ -44,13 +45,14 @@ public class StellenController {
     public String zeigeBearbeitenFormular(@PathVariable("id") Long id, Model model) {
         Stellen bestehendeStelle = stellenService.stelleSuchenId(id);
         // Wir übergeben die bestehende Stelle an dasselbe Formular wie beim Anlegen
-        model.addAttribute("stellen", bestehendeStelle); 
+        model.addAttribute("stellen", bestehendeStelle);
+        model.addAttribute("statusWerte", StellenStatus.values()); 
         return "Stellen/stellen"; 
     }
 
     @GetMapping("/bewerber/stellen/{id}")
     public String zeigeDetailsBewerber(@PathVariable("id") Long id, Model model) {
-        Stellen gefundeneStelle = stellenService.stelleSuchenId(id); 
+        Stellen gefundeneStelle = stellenService.offeneStelleFinden(id);
         model.addAttribute("stelle", gefundeneStelle);
         
         // Verweist auf templates/Bewerber/details.html

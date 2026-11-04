@@ -30,7 +30,8 @@
 
                 <td th:text="${stelle.bereich}"></td>
                 <td>
-                    <span class="badge bg-success" th:text="${stelle.stellenStatus}"></span>
+                    <span class="badge" th:classappend="${stelle.stellenStatus.badgeKlasse}"
+                          th:text="${stelle.stellenStatus.anzeigename}"></span>
                 </td>
                 <!-- 'pre-line' sorgt dafür, dass Zeilenumbrüche im Text erhalten bleiben -->
                 <td style="white-space: pre-line; max-width: 400px;" th:text="${stelle.beschreibung}"></td>

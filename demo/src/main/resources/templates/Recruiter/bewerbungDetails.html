@@ -54,7 +54,8 @@
     </p>
     <div class="mb-3">
         <span class="badge bg-secondary me-2" th:text="${bewerbung.stelle.bereich}"></span>
-        <span class="badge bg-success" th:text="${bewerbung.stelle.stellenStatus}"></span>
+        <span class="badge" th:classappend="${bewerbung.stelle.stellenStatus.badgeKlasse}"
+              th:text="${bewerbung.stelle.stellenStatus.anzeigename}"></span>
     </div>
 
     <hr>

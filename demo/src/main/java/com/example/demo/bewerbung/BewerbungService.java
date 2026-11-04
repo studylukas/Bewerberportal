@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.Stellen.Stellen;
 import com.example.demo.Stellen.StellenRepository;
+import com.example.demo.Stellen.StellenStatus;
 import com.example.demo.bewerber.Bewerber;
 import com.example.demo.bewerber.BewerberRepository;
 import com.example.demo.exception.NichtGefundenException;
@@ -38,6 +39,10 @@ public class BewerbungService {
         }
         Bewerber b = bewerberRepository.findById(bewerberId).orElseThrow();
         Stellen s = stelleRepository.findById(stelleId).orElseThrow();
+        // Auf geschlossene Stellen darf man sich nicht bewerben (z. B. über eine alte URL)
+        if (s.getStellenStatus() != StellenStatus.OFFEN) {
+            throw new NichtGefundenException("Diese Stelle ist nicht mehr ausgeschrieben.");
+        }
         Bewerbung gespeichert = bewerbungRepository.save(new Bewerbung(b, s, anschreiben, gehaltswunsch));
         statusAenderungRepository.save(new StatusAenderung(bewerberId, stelleId,null, BewerbungStatus.EINGEGANGEN, null));
         return gespeichert;

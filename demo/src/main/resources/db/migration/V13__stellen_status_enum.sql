@@ -1,0 +1,1 @@
+UPDATE stellen set stellen_status = 'OFFEN';

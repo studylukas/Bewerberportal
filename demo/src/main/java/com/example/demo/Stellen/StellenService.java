@@ -3,6 +3,8 @@ package com.example.demo.Stellen;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.exception.NichtGefundenException;
+
 @Service 
 public class StellenService {
 
@@ -22,6 +24,13 @@ public class StellenService {
     
     public Stellen stelleSuchenId(Long id) {
     return stellenRepository.findById(id).orElse(null);
+    }
+
+    // Für Bewerber: nur offene Stellen sind abrufbar; geschlossene verhalten sich wie nicht vorhanden
+    public Stellen offeneStelleFinden(Long id) {
+        return stellenRepository.findById(id)
+                .filter(s -> s.getStellenStatus() == StellenStatus.OFFEN)
+                .orElseThrow(() -> new NichtGefundenException("Diese Stelle ist nicht mehr ausgeschrieben."));
     }
 
     public Stellen stelleSpeichern(Stellen formular){
