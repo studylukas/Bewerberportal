@@ -21,12 +21,14 @@ public class BewerbungService {
     private final BewerberRepository bewerberRepository;
     private final StellenRepository stelleRepository;
     private final StatusAenderungRepository statusAenderungRepository;
+    private final NotizRepository notizRepository;
 
-    public BewerbungService(BewerbungRepository bewerbungRepository, BewerberRepository bewerberRepository, StellenRepository stellenRepository, StatusAenderungRepository statusAenderungRepository){
+    public BewerbungService(BewerbungRepository bewerbungRepository, BewerberRepository bewerberRepository, StellenRepository stellenRepository, StatusAenderungRepository statusAenderungRepository, NotizRepository notizRepository){
         this.bewerbungRepository = bewerbungRepository;
         this.bewerberRepository = bewerberRepository;
         this.stelleRepository = stellenRepository;
         this.statusAenderungRepository = statusAenderungRepository;
+        this.notizRepository = notizRepository;
     }
 
     @Transactional
@@ -70,4 +72,25 @@ public class BewerbungService {
     public List<StatusAenderung> statusHistorie(Long bewerberId, Long stellenId){
         return statusAenderungRepository.findByBewerberIdAndStellenIdOrderByGeaendertAmAsc(bewerberId, stellenId);
     }
+    
+    @Transactional
+    public void bewertungAendern(Long bewerberId, Long stellenId, Integer bewertung){
+        if( bewertung == null || bewertung > 5 || bewertung < 1) {throw new IllegalArgumentException("Die Bewertung muss zwischen 1 und 5 erfolgen."); }
+        
+        Bewerbung b = bewerbungRepository.findById(new BewerbungId(bewerberId, stellenId)).orElseThrow();
+        b.setBewertung(bewertung);
+    }
+    
+    @Transactional 
+    public void notizHinzufuegen(Long bewerberId, Long stellenId, String text, Recruiter recruiter){
+        if(text == null || text.isEmpty()) {return;}
+        
+        notizRepository.save(new Notiz(bewerberId, stellenId, text, recruiter));
+    }
+    
+    public List<Notiz> notizFinden(Long bewerberId, Long stellenId){
+        return notizRepository.findByBewerberIdAndStellenIdOrderByErstelltAmDesc(bewerberId, stellenId);
+    }
+    
 }
+

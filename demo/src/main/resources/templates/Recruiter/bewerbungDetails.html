@@ -104,6 +104,41 @@
         <button type="submit" class="btn btn-primary">Status speichern</button>
     </form>
 
+    <hr class="mt-5">
+
+    <!-- Bewertung (UC-R02): intern, 1 bis 5 -->
+    <h4 class="fw-bold mt-4">Bewertung</h4>
+    <p class="fs-5" th:if="${bewerbung.bewertung != null}" th:text="${bewerbung.bewertung} + ' / 5'"></p>
+    <p class="text-muted fst-italic" th:unless="${bewerbung.bewertung != null}">Noch nicht bewertet.</p>
+    <form th:action="@{/recruiter/bewerbung/{b}/{s}/bewertung(b=${bewerbung.bewerber.id}, s=${bewerbung.stelle.id})}" method="post"
+          class="d-flex gap-2 align-items-center">
+        <select name="bewertung" class="form-select" style="max-width: 250px;">
+            <option th:each="i : ${#numbers.sequence(1, 5)}" th:value="${i}" th:text="${i}"
+                    th:selected="${i == bewerbung.bewertung}"></option>
+        </select>
+        <button type="submit" class="btn btn-primary">Bewertung speichern</button>
+    </form>
+
+    <hr class="mt-5">
+
+    <!-- Interne Notizen (UC-R04): nur für Recruiter sichtbar, neueste zuerst -->
+    <h4 class="fw-bold mt-4">Notizen</h4>
+    <form th:action="@{/recruiter/bewerbung/{b}/{s}/notizen(b=${bewerbung.bewerber.id}, s=${bewerbung.stelle.id})}" method="post"
+          class="mb-4">
+        <textarea name="text" class="form-control mb-2" rows="3" placeholder="Neue Notiz ..." required></textarea>
+        <button type="submit" class="btn btn-primary">Notiz speichern</button>
+    </form>
+
+    <div th:each="n : ${notizen}" class="border rounded p-3 mb-2">
+        <div class="small text-muted mb-1">
+            <span th:text="${#temporals.format(n.erstelltAm, 'dd.MM.yyyy HH:mm')}"></span>
+            &middot;
+            <span th:text="${n.recruiter?.name ?: 'Unbekannt'}"></span>
+        </div>
+        <p class="mb-0" style="white-space: pre-line;" th:text="${n.text}"></p>
+    </div>
+    <p th:if="${#lists.isEmpty(notizen)}" class="text-muted fst-italic">Noch keine Notizen.</p>
+
     <div class="d-flex justify-content-between mt-5">
         <!-- Zurück-Button zur Liste -->
         <a th:href="@{/recruiter/listeBewerbungen}" class="btn btn-outline-secondary">Zurück zur Übersicht</a>

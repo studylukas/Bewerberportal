@@ -50,6 +50,7 @@ public class RecruiterController {
         model.addAttribute("bewerbung", bewerbungService.bewerbungFinden(bewerberId, stellenId));
         model.addAttribute("statusWerte", BewerbungStatus.values());
         model.addAttribute("verlauf", bewerbungService.statusHistorie(bewerberId, stellenId));
+        model.addAttribute("notizen", bewerbungService.notizFinden(bewerberId, stellenId));
         return "Recruiter/bewerbungDetails";
     }
     
@@ -61,6 +62,20 @@ public class RecruiterController {
         bewerbungService.statusAendern(bewerberId, stellenId, status, aktuellerBearbeiter);
     
         return "redirect:/recruiter/bewerbungen/" + bewerberId + "/" + stellenId;
-}
+    }
+    
+    @PostMapping ("/bewerbung/{bewerberId}/{stellenId}/bewertung")
+    public String bewerbungBewerten(@PathVariable Long bewerberId, @PathVariable Long stellenId, @RequestParam Integer bewertung){
+        bewerbungService.bewertungAendern(bewerberId, stellenId, bewertung);
+        
+        return "redirect:/recruiter/bewerbungen/" + bewerberId + "/" + stellenId;
+    }
+    
+    @PostMapping ("/bewerbung/{bewerberId}/{stellenId}/notizen")
+    public String notizBewerbung(@PathVariable Long bewerberId, @PathVariable Long stellenId, @RequestParam String text, Principal principal){
+        bewerbungService.notizHinzufuegen(bewerberId, stellenId, text, recruiterService.bearbeiter(principal.getName()));
+        
+        return "redirect:/recruiter/bewerbungen/" + bewerberId + "/" + stellenId;
+    }
 
 }

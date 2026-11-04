@@ -52,6 +52,8 @@ public class Bewerbung {
     
     @Column(name = "zugang_token", nullable = false, unique = true, length = 36)
     private String zugangToken;
+    
+    private Integer bewertung;
 
     protected Bewerbung() {}
 
@@ -63,7 +65,7 @@ public class Bewerbung {
         this.einwilligungAm = LocalDateTime.now();
         this.gehaltswunsch = gehaltswunsch;
         this.zugangToken = UUID.randomUUID().toString();
-    }
+        }
 
     public BewerbungId getId() {
         return id;
@@ -107,5 +109,13 @@ public class Bewerbung {
 
     public String getZugangToken() {
         return zugangToken;
+    }
+    
+    public void setBewertung(Integer bewertung){
+        this.bewertung = bewertung;
+    }
+    
+    public Integer getBewertung(){
+        return bewertung;
     }
 }
