@@ -33,7 +33,9 @@ public class StellenService {
         bestehend.setBeschreibung(formular.getBeschreibung());
         bestehend.setBereich(formular.getBereich());
         bestehend.setStellenStatus(formular.getStellenStatus());
+        bestehend.setStandort(formular.getStandort());
         return stellenRepository.save(bestehend);
     }
+       
 
 }

@@ -1,0 +1,1 @@
+Alter Table stellen Add COLUMN standort varchar(100);

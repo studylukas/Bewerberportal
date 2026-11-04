@@ -24,8 +24,13 @@ public class BewerberController {
     }
 
     @GetMapping("/")
-    public String startseite(Model model){
-        model.addAttribute("bewerberListe", bewerberService.alleStellenAnzeigen());
+    public String startseite(@RequestParam(required = false) String stichwort, @RequestParam(required = false) String bereich, @RequestParam(required = false) String standort, Model model){
+        model.addAttribute("bewerberListe", bewerberService.stellenSuchen(stichwort, bereich, standort ));
+        model.addAttribute("bereiche", bewerberService.alleBereiche());
+        model.addAttribute("standorte", bewerberService.alleStandorte());
+        model.addAttribute("stichwort", stichwort);
+        model.addAttribute("bereich", bereich);
+        model.addAttribute("standort", standort);
         return "Bewerber/liste";
     }
 

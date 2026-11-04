@@ -24,15 +24,18 @@ public class Stellen {
     private Instant erstelltAm;
     @Column (name = "stellen_status", length = 100, nullable = false)
     private String stellenStatus;
+    @Column(length = 100)
+    private String standort;
 
     
     protected Stellen (){}
     
-    public Stellen(String bezeichnung, String beschreibung, String bereich, String stellenStatus){
+    public Stellen(String bezeichnung, String beschreibung, String bereich, String stellenStatus, String standort){
         this.bezeichnung = bezeichnung;
         this.beschreibung = beschreibung;
         this.bereich = bereich;
         this.stellenStatus = stellenStatus;
+        this.standort = standort;
     }
     
     @PrePersist 
@@ -78,5 +81,13 @@ public class Stellen {
     
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getStandort() {
+        return standort;
+    }
+
+    public void setStandort(String standort) {
+        this.standort = standort;
     }
 }
