@@ -14,16 +14,13 @@ public class StellenService {
         this.stellenRepository = stellenRepository;
     }
     
-    public Stellen stelleAnlegen(Stellen stellen){
-        return stellenRepository.save(stellen);
-    }
-    
     public List<Stellen> alleStellenAnzeigen(){
         return stellenRepository.findAll();
     }
-    
+
     public Stellen stelleSuchenId(Long id) {
-    return stellenRepository.findById(id).orElse(null);
+        return stellenRepository.findById(id)
+                .orElseThrow(() -> new NichtGefundenException("Diese Stelle gibt es nicht."));
     }
 
     // Für Bewerber: nur offene Stellen sind abrufbar; geschlossene verhalten sich wie nicht vorhanden

@@ -1,64 +1,48 @@
 package com.example.demo.recruiter;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.Stellen.Stellen;
-import com.example.demo.Stellen.StellenRepository;
-import com.example.demo.Stellen.StellenService;
 import com.example.demo.exception.NichtGefundenException;
 
-@Service 
+@Service
 public class RecruiterService {
     private final RecruiterRepository recruiterRepository;
-    private final StellenService stellenService;
-    private final StellenRepository stellenRepository;
     private final PasswordEncoder passwordEncoder;
-    
-    
-    public RecruiterService(RecruiterRepository recruiterRepository, StellenService stellenService, StellenRepository stellenRepository, PasswordEncoder passwordEncoder){
+
+
+    public RecruiterService(RecruiterRepository recruiterRepository, PasswordEncoder passwordEncoder){
         this.recruiterRepository = recruiterRepository;
-        this.stellenService = stellenService;
-        this.stellenRepository = stellenRepository;
         this.passwordEncoder = passwordEncoder;
     }
-    
-    public Recruiter registerRecruiter(String email, String passwortHash, String name){
+
+    public Recruiter registerRecruiter(String email, String passwort, String name, Rolle rolle){
+
+        if (passwort == null || passwort.length() < 8) {throw new IllegalArgumentException("Passwort muss mindestens 8 Zeichen lang sein.");}
         
         if (recruiterRepository.findByEmail(email).isPresent()){
             throw new IllegalArgumentException("Diese E-Mail wird bereits verwendet");
         }
-        
+
         Recruiter recruiter = new Recruiter();
         recruiter.setEmail(email);
         recruiter.setName(name);
-        
-        String hashedPassword = passwordEncoder.encode(passwortHash);
+
+        String hashedPassword = passwordEncoder.encode(passwort);
         recruiter.setPasswortHash(hashedPassword);
-        
+        recruiter.setRolle(rolle);
+
         return recruiterRepository.save(recruiter);
     }
-    
-    public boolean login (String email, String passwortHash){
-        Optional<Recruiter> recruiterOpt = recruiterRepository.findByEmail(email);
-        
-        if (recruiterOpt.isEmpty()){
-            return false;
-        }
-        
-        Recruiter recruiter = recruiterOpt.get();
-        return passwordEncoder.matches(passwortHash, recruiter.getPasswortHash());
-    }
-    
-    
-    public Stellen stelleAnlegen(Stellen stellen){
-        return stellenRepository.save(stellen);
-    }
-    
+
     public Recruiter bearbeiter(String email){
-       return recruiterRepository.findByEmail(email).orElseThrow(() -> new NichtGefundenException("Recruiter nicht gefunfen."));
+       return recruiterRepository.findByEmail(email).orElseThrow(() -> new NichtGefundenException("Recruiter nicht gefunden."));
     }
     
+    public List<Recruiter> alleRecruiter(){
+        return recruiterRepository.findAll();
+    }
+
 }

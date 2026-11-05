@@ -9,18 +9,12 @@ import com.example.demo.Stellen.StellenRepository;
 
 @Service 
 public class BewerberService {
-    private final BewerberRepository bewerberRepository;
     private final StellenRepository stellenRepository;
-    
-    public BewerberService(BewerberRepository bewerberRepository, StellenRepository stellenRepository){
-        this.bewerberRepository = bewerberRepository;
+
+    public BewerberService(StellenRepository stellenRepository){
         this.stellenRepository = stellenRepository;
     }
     
-    public List<Stellen> alleStellenAnzeigen(){
-        return stellenRepository.findAll();
-    }
-
     public List<Stellen> stellenSuchen(String stichwort, String bereich, String standort){
         return stellenRepository.suchen(leerZuNull(stichwort), leerZuNull(bereich), leerZuNull(standort));
     }
@@ -39,9 +33,5 @@ public class BewerberService {
             return null;
         }
         return wert.trim();
-    }
-    
-    public List<Bewerber> alleBewerberAnzeigen(){
-        return bewerberRepository.findAll();
     }
 }

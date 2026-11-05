@@ -11,11 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.demo.Stellen.Stellen;
 import com.example.demo.bewerbung.Bewerbung;
 import com.example.demo.bewerbung.BewerbungService;
 import com.example.demo.bewerbung.BewerbungStatus;
@@ -30,13 +28,6 @@ public class RecruiterController {
     public RecruiterController(RecruiterService recruiterService, BewerbungService bewerbungService){
         this.recruiterService = recruiterService;
         this.bewerbungService = bewerbungService;
-    }
-    
-    @PostMapping("/stellen")
-    public ResponseEntity<Stellen> neueStelleAnlegen(@RequestBody Stellen neueStelle) {
-        // Ruft deine bereits existierende Methode im Service auf
-        Stellen gespeicherteStelle = recruiterService.stelleAnlegen(neueStelle);
-        return ResponseEntity.ok(gespeicherteStelle);
     }
     
     @GetMapping("/listeBewerbungen")

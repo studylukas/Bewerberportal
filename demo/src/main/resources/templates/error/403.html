@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<!-- Wird von Spring Boot automatisch bei Status 403 angezeigt (z. B. Recruiter ruft /admin/... auf) -->
+<html xmlns:th="http://www.thymeleaf.org" lang="de"
+      th:replace="~{layout :: layout(~{::title}, 'recruiter', ~{::main})}">
+<head>
+    <title>Kein Zugriff</title>
+</head>
+<body>
+<main class="bg-white p-5 rounded shadow-sm mx-auto text-center" style="max-width: 800px;">
+    <h1 class="fw-bold mb-3">Kein Zugriff</h1>
+    <p class="text-muted fs-5">Diese Seite ist nur für Administratoren.</p>
+
+    <a th:href="@{/startseite}" class="btn btn-primary mt-4">Zur Recruiter-Startseite</a>
+</main>
+</body>
+</html>

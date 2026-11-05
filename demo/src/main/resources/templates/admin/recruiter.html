@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="de"
+      th:replace="~{layout :: layout(~{::title}, 'recruiter', ~{::main})}">
+<head>
+    <title>Recruiter verwalten</title>
+</head>
+<body>
+<main class="bg-white p-5 rounded shadow-sm mx-auto" style="max-width: 900px;">
+
+    <h1 class="fw-bold mb-4">Recruiter verwalten</h1>
+
+    <!-- Alle Benutzer mit Zugang zum Recruiter-Bereich -->
+    <table class="table table-striped align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Name</th>
+                <th>E-Mail</th>
+                <th>Rolle</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="r : ${recruiterListe}">
+                <td class="fw-bold" th:text="${r.name}"></td>
+                <td th:text="${r.email}"></td>
+                <td>
+                    <span class="badge" th:classappend="${r.rolle?.name() == 'ADMIN'} ? 'bg-danger' : 'bg-primary'"
+                          th:text="${r.rolle}"></span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr class="mt-5">
+
+    <!-- Neuen Recruiter anlegen; Prüfungen (doppelte E-Mail, Passwortlänge) macht der RecruiterService -->
+    <h4 class="fw-bold mt-4">Neuen Recruiter anlegen</h4>
+    <form th:action="@{/admin/recruiter}" method="post" class="row g-3">
+        <div class="col-md-6">
+            <label for="name" class="form-label fw-medium">Name</label>
+            <input type="text" id="name" name="name" class="form-control" maxlength="50" required>
+        </div>
+        <div class="col-md-6">
+            <label for="email" class="form-label fw-medium">E-Mail</label>
+            <input type="email" id="email" name="email" class="form-control" maxlength="50" required>
+        </div>
+        <div class="col-md-6">
+            <label for="passwort" class="form-label fw-medium">Passwort</label>
+            <input type="password" id="passwort" name="passwort" class="form-control"
+                   minlength="8" autocomplete="new-password" required>
+            <div class="form-text">Mindestens 8 Zeichen.</div>
+        </div>
+        <div class="col-md-6">
+            <label for="rolle" class="form-label fw-medium">Rolle</label>
+            <select id="rolle" name="rolle" class="form-select">
+                <option th:each="ro : ${rollen}" th:value="${ro}" th:text="${ro}"
+                        th:selected="${ro.name() == 'RECRUITER'}"></option>
+            </select>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Recruiter anlegen</button>
+        </div>
+    </form>
+</main>
+</body>
+</html>

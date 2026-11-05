@@ -34,6 +34,7 @@ public class SecurityConfig {
                  "/bewerber", "/bewerber/stellen/**",
                  "/impressum", "/datenschutz", "/bewerbung/status/**").permitAll()
                 .requestMatchers("/favicon.ico", "/styles.css", "/css/**", "/js/**", "/images/**").permitAll()
+                .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
 
             )

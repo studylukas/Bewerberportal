@@ -46,6 +46,8 @@
                     <li class="nav-item"><a class="nav-link" th:href="@{/startseite}">Startseite</a></li>
                     <li class="nav-item"><a class="nav-link" th:href="@{/recruiter/listeBewerbungen}">Bewerbungen</a></li>
                     <li class="nav-item"><a class="nav-link" th:href="@{/stellen/liste}">Stellen</a></li>
+                    <!-- Nur für Administratoren (istAdmin kommt aus NavigationAdvice) -->
+                    <li class="nav-item" th:if="${istAdmin}"><a class="nav-link" th:href="@{/admin/recruiter}">Recruiter verwalten</a></li>
                     <li class="nav-item ms-md-3">
                         <form th:action="@{/logout}" method="post" class="m-0">
                             <button type="submit" class="btn btn-outline-light btn-sm">Abmelden</button>
