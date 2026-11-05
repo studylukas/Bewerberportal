@@ -1,9 +1,12 @@
 package com.example.demo.bewerbung;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.Stellen.Stellen;
 import com.example.demo.Stellen.StellenRepository;
@@ -23,29 +26,82 @@ public class BewerbungService {
     private final StellenRepository stelleRepository;
     private final StatusAenderungRepository statusAenderungRepository;
     private final NotizRepository notizRepository;
+    private final DokumentRepository dokumentRepository;
 
-    public BewerbungService(BewerbungRepository bewerbungRepository, BewerberRepository bewerberRepository, StellenRepository stellenRepository, StatusAenderungRepository statusAenderungRepository, NotizRepository notizRepository){
+    public BewerbungService(BewerbungRepository bewerbungRepository, BewerberRepository bewerberRepository, StellenRepository stellenRepository, StatusAenderungRepository statusAenderungRepository, NotizRepository notizRepository, DokumentRepository dokumentRepository){
         this.bewerbungRepository = bewerbungRepository;
         this.bewerberRepository = bewerberRepository;
         this.stelleRepository = stellenRepository;
         this.statusAenderungRepository = statusAenderungRepository;
         this.notizRepository = notizRepository;
+        this.dokumentRepository = dokumentRepository;
     }
 
+    // Bewerber und Bewerbung werden in EINER Transaktion gespeichert: schlägt ein Schritt fehl,
+    // wird alles zurückgerollt und es bleiben keine personenbezogenen Daten ohne Bewerbung zurück.
     @Transactional
-    public Bewerbung bewerben(Long bewerberId, Long stelleId, String anschreiben, BigDecimal gehaltswunsch) {
-        if (bewerbungRepository.existsById(new BewerbungId(bewerberId, stelleId))) {
-            throw new IllegalStateException("Bereits auf diese Stelle beworben");
+    public Bewerbung bewerben(Bewerber bewerber, Long stelleId, String anschreiben, BigDecimal gehaltswunsch, List<MultipartFile> unterlagen) throws IOException {
+        if (bewerber.getEmail() == null || !bewerber.getEmail().contains("@")) {
+            throw new IllegalArgumentException("Ungültige E-Mail");
         }
-        Bewerber b = bewerberRepository.findById(bewerberId).orElseThrow();
-        Stellen s = stelleRepository.findById(stelleId).orElseThrow();
+        
+       List<MultipartFile> dateien = new ArrayList<>();
+       if(unterlagen != null){
+           for(MultipartFile datei : unterlagen){
+               if (!datei.isEmpty()){
+                   dateien.add(datei);
+               }
+           }
+       }
+       
+       if (dateien.size() > 5 || dateien.size() == 0){
+           throw new IllegalArgumentException("Es muss mindestens eine und maximal fünf Dateien hochgeladen werden.");
+       }
+       
+       for (MultipartFile d : dateien){
+           if (d.getSize() > 5 * 1024 * 1024){
+               throw new IllegalArgumentException("Die Datei "+ d.getOriginalFilename() + " ist größer als 5 MB.");
+           }
+           
+           
+           if(!istPdf(d.getBytes())){
+               throw new IllegalArgumentException("Die Datei " + d.getOriginalFilename() + " ist kein PDF.");
+           }
+       }
+        
+        Stellen s = stelleRepository.findById(stelleId)
+                .orElseThrow(() -> new NichtGefundenException("Diese Stelle gibt es nicht."));
         // Auf geschlossene Stellen darf man sich nicht bewerben (z. B. über eine alte URL)
         if (s.getStellenStatus() != StellenStatus.OFFEN) {
             throw new NichtGefundenException("Diese Stelle ist nicht mehr ausgeschrieben.");
         }
+
+        // Erst jetzt speichern – danach hat der Bewerber eine ID
+        Bewerber b = bewerberRepository.save(bewerber);
+
         Bewerbung gespeichert = bewerbungRepository.save(new Bewerbung(b, s, anschreiben, gehaltswunsch));
-        statusAenderungRepository.save(new StatusAenderung(bewerberId, stelleId,null, BewerbungStatus.EINGEGANGEN, null));
+        statusAenderungRepository.save(new StatusAenderung(b.getId(), stelleId, null, BewerbungStatus.EINGEGANGEN, null));
+
+        // Unterlagen speichern – gleiche Transaktion, also alles oder nichts
+        for (MultipartFile d : dateien){
+            dokumentRepository.save(new Dokument(b.getId(), stelleId, d.getOriginalFilename(),
+                    d.getContentType(), d.getSize(), d.getBytes()));
+        }
         return gespeichert;
+    }
+
+    // Jede echte PDF-Datei beginnt mit den Zeichen "%PDF" ("Magic Number")
+    private boolean istPdf(byte[] daten){
+        return daten.length >= 4 && daten[0] == '%' && daten[1] == 'P' && daten[2] == 'D' && daten[3] == 'F';
+    }
+
+    public List<Dokument> dokumenteFinden(Long bewerberId, Long stellenId){
+        return dokumentRepository.findByBewerberIdAndStellenIdOrderByHochgeladenAmAsc(bewerberId, stellenId);
+    }
+
+    public Dokument dokumentFinden(Long id){
+        return dokumentRepository.findById(id)
+                .orElseThrow(() -> new NichtGefundenException("Dieses Dokument gibt es nicht."));
     }
 
     @Transactional

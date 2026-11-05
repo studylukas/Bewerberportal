@@ -17,15 +17,6 @@ public class BewerberService {
         this.stellenRepository = stellenRepository;
     }
     
-    public Bewerber BewerberAnlegen(Bewerber bewerber){
-        
-       if(!bewerber.getEmail().contains("@")) {
-            throw new RuntimeException("Ungültige E-Mail");
-        }
-        
-        return bewerberRepository.save(bewerber);
-    }
-    
     public List<Stellen> alleStellenAnzeigen(){
         return stellenRepository.findAll();
     }

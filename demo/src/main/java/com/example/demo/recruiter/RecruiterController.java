@@ -3,6 +3,8 @@ package com.example.demo.recruiter;
 import java.security.Principal;
 import java.util.List;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +19,7 @@ import com.example.demo.Stellen.Stellen;
 import com.example.demo.bewerbung.Bewerbung;
 import com.example.demo.bewerbung.BewerbungService;
 import com.example.demo.bewerbung.BewerbungStatus;
+import com.example.demo.bewerbung.Dokument;
 
 @Controller 
 @RequestMapping("/recruiter")
@@ -51,6 +54,7 @@ public class RecruiterController {
         model.addAttribute("statusWerte", BewerbungStatus.values());
         model.addAttribute("verlauf", bewerbungService.statusHistorie(bewerberId, stellenId));
         model.addAttribute("notizen", bewerbungService.notizFinden(bewerberId, stellenId));
+        model.addAttribute("dokumente", bewerbungService.dokumenteFinden(bewerberId, stellenId));
         return "Recruiter/bewerbungDetails";
     }
     
@@ -76,6 +80,17 @@ public class RecruiterController {
         bewerbungService.notizHinzufuegen(bewerberId, stellenId, text, recruiterService.bearbeiter(principal.getName()));
         
         return "redirect:/recruiter/bewerbungen/" + bewerberId + "/" + stellenId;
+    }
+    
+    @GetMapping ("/dokumente/{id}")
+    public ResponseEntity<byte[]> dokumentenDownload(@PathVariable Long id){
+        Dokument dokument = bewerbungService.dokumentFinden(id);
+        
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .header(HttpHeaders.CONTENT_DISPOSITION, 
+                    "inline; filename=\"" + dokument.getDateiname() + "\"")
+                .body(dokument.getInhalt());
     }
 
 }

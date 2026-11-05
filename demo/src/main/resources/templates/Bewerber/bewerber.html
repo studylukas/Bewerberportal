@@ -10,7 +10,8 @@
         <h1 class="mb-4">Bewerbung einreichen</h1>
 
         <!-- Das Formular nutzt das Objekt aus Ihrem Controller -->
-        <form th:action="@{/bewerber}" th:object="${bewerber}" method="post" class="card p-4 shadow-sm">
+        <!-- multipart/form-data: ohne dieses Attribut würde der Browser nur die Dateinamen schicken, nicht die Dateien -->
+        <form th:action="@{/bewerber}" th:object="${bewerber}" method="post" enctype="multipart/form-data" class="card p-4 shadow-sm">
 
             <!-- Vorname -->
             <div class="mb-3">
@@ -43,6 +44,14 @@
             <div class="mb-3" th:if="${stellenId != null}">
                 <label for="anschreiben" class="form-label fw-medium">Anschreiben</label>
                 <textarea id="anschreiben" name="anschreiben" rows="5" class="form-control"></textarea>
+            </div>
+
+            <!-- Unterlagen (UC-B03): mehrere PDFs möglich -->
+            <div class="mb-3">
+                <label for="unterlagen" class="form-label fw-medium">Unterlagen (Lebenslauf, Zeugnisse …)</label>
+                <input type="file" id="unterlagen" name="unterlagen" class="form-control"
+                       accept="application/pdf" multiple required>
+                <div class="form-text">Nur PDF, 1 bis 5 Dateien, je max. 5 MB. Mehrere Dateien mit gedrückter Strg-Taste auswählen.</div>
             </div>
 
             <div class="mb-3">

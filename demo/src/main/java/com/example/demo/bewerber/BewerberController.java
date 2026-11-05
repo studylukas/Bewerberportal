@@ -1,6 +1,8 @@
 package com.example.demo.bewerber;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.example.demo.bewerbung.Bewerbung;
 import com.example.demo.bewerbung.BewerbungService;
@@ -43,23 +46,24 @@ public class BewerberController {
         return "Bewerber/bewerber";
     }
 
+
     @PostMapping("/bewerber")
     public String bewerberAnlegen(@ModelAttribute Bewerber bewerber,
                                   @RequestParam(name = "stellenId", required = false) Long stellenId,
                                   @RequestParam(name = "anschreiben", required = false) String anschreiben,
                                   @RequestParam (name = "einwilligung", defaultValue = "false") boolean einwilligung,
-                                  @RequestParam (name = "gehaltswunsch", required = false) BigDecimal gehaltswunsch){
-        
+                                  @RequestParam (name = "gehaltswunsch", required = false) BigDecimal gehaltswunsch,
+                                  @RequestParam (name = "unterlagen") List<MultipartFile> unterlagen) throws IOException {         
         if (!einwilligung){
             throw new IllegalArgumentException("Ohne Einwilligung kann die Bewerbung nicht gespeichert werden.");
         }
-        Bewerber gespeichert = bewerberService.BewerberAnlegen(bewerber);
-
+        // Ohne Stelle gibt es keine Bewerbung -> nichts speichern
         if (stellenId == null) {
             return "redirect:/";
         }
 
-        Bewerbung bewerbung = bewerbungService.bewerben(gespeichert.getId(), stellenId, anschreiben, gehaltswunsch);
+        // Bewerber + Bewerbung werden gemeinsam in einer Transaktion gespeichert
+        Bewerbung bewerbung = bewerbungService.bewerben(bewerber, stellenId, anschreiben, gehaltswunsch, unterlagen);
 
         return "redirect:/bewerbung/status/" + bewerbung.getZugangToken();
     }

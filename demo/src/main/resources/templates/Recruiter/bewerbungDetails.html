@@ -69,6 +69,22 @@
 
     <hr>
 
+    <!-- Hochgeladene Unterlagen (UC-B03); Download nur für eingeloggte Recruiter -->
+    <h4 class="fw-bold mt-4">Unterlagen</h4>
+    <ul class="list-group mb-2" th:unless="${#lists.isEmpty(dokumente)}">
+        <li class="list-group-item d-flex justify-content-between align-items-center" th:each="d : ${dokumente}">
+            <span>
+                <span th:text="${d.dateiname}"></span>
+                <!-- Größe in KB (aufgerundet), damit auch kleine Dateien nicht als 0 KB erscheinen -->
+                <small class="text-muted ms-2" th:text="${(d.groesse + 1023) / 1024} + ' KB'"></small>
+            </span>
+            <a th:href="@{/recruiter/dokumente/{id}(id=${d.id})}" target="_blank" class="btn btn-sm btn-outline-primary">Öffnen</a>
+        </li>
+    </ul>
+    <p th:if="${#lists.isEmpty(dokumente)}" class="text-muted fst-italic">Keine Unterlagen vorhanden.</p>
+
+    <hr>
+
     <!-- Verlauf aller Statuswechsel (UC-R03); ältester Eintrag zuerst -->
     <h4 class="fw-bold mt-4">Verlauf</h4>
     <table class="table table-sm align-middle" th:unless="${#lists.isEmpty(verlauf)}">
